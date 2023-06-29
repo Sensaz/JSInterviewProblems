@@ -2,21 +2,59 @@
 
 // searchInString('AdnBndAndBdaBn', 'dAn') //  4 ("Adn", "ndA", "dAn", "And")
 
-// f('AbrAcadAbRa', 'cAda') // 2
+// searchInString('AbrAcadAbRa', 'cAda') // 2
 
-function factorial(n, el) {
-  if (n === 0 || n === 1) {
-    return 1;
-  } else {
-    return n * factorial(n - 1);
-  }
+// <!--------- DLA N ELEMENTÓW ---------!>
+function anagramForNElements(arrReg) {
+  let options = [];
+  let helperCombinations = [];
+
+  (function factorialSort(arr, options) {
+    for (let i = 0; i < arr.length; i++) {
+      const combination = [];
+
+      for (let j = 0; j < arr.length - 1; j++) {
+        const index = (i + j) % arr.length;
+        combination.push(arr[index]);
+      }
+      if (combination.length > 3) factorialSort(combination, options);
+      else options.push(combination);
+    }
+  })(arrReg, options);
+
+  options.forEach((el) => {
+    for (let i = 0; i <= 2; i++) {
+      const currentSign = el[i];
+      let firstSign = "";
+      const temporary = el.filter((sign) => sign !== currentSign);
+      for (let n = 0; n <= 1; n++) {
+        n === 0
+          ? (firstSign = temporary)
+          : (firstSign = [temporary[1], temporary[0]]);
+
+        helperCombinations = [
+          ...helperCombinations,
+          ...[[currentSign, ...firstSign].join("")],
+        ];
+      }
+    }
+  });
+
+  return helperCombinations.map((el) => {
+    const missingLetter = arrReg
+      .filter((element) => !el.split("").includes(element))
+      .join("");
+    if (missingLetter >= 2) {
+      return;
+    }
+    return missingLetter + el;
+  });
 }
 
-function searchInString(str, reg) {
-  const arrReg = reg.split("");
-  let combinations = [];
-  let includesElements = [];
+// <!--------- DLA 3 ELEMENTÓW ---------!>
 
+function anagramForThreeElements(arrReg) {
+  let options = [];
   for (let i = 0; i <= 2; i++) {
     const currentSign = arrReg[i];
     let firstSign = "";
@@ -26,24 +64,31 @@ function searchInString(str, reg) {
         ? (firstSign = temporary)
         : (firstSign = [temporary[1], temporary[0]]);
 
-      combinations = [
-        ...combinations,
-        ...[[currentSign, ...firstSign].join("")],
-      ];
+      options = [...options, ...[[currentSign, ...firstSign].join("")]];
     }
   }
+  return options;
+}
+
+// <!--------- DLA 2 ELEMENTÓW ---------!>
+
+function anagramForTwoElements(arrReg) {
+  return [arrReg.join(""), [arrReg[1], arrReg[0]].join("")];
+}
+
+function searchInString(str, reg) {
+  const arrReg = reg.split("");
+  let combinations = [];
+  let includesElements = [];
+
+  if (arrReg.length > 3) combinations = anagramForNElements(arrReg);
+  else if (arrReg.length === 3) combinations = anagramForThreeElements(arrReg);
+  else combinations = anagramForTwoElements(arrReg);
+
   combinations.forEach((el) => {
     str.includes(el) && (includesElements = [...includesElements, el]);
   });
-  console.log(combinations);
-  console.log(includesElements.length, includesElements);
+  return `Mamy ${
+    includesElements.length
+  } unikalne rozwiązania: ${includesElements.join(", ")}`;
 }
-
-// Obliczyc wszystkie mozliwe kombinacje dla reg, porównac czy str zawiera jakikolwiek ciąg znaków z reg'a następnie wypisac jej wszystkie do talblicy i obliczyc jej długośc es
-
-// 3. Uogólnic kod tak aby działał z większą lub mniejszą ilością znaków, pomocna moze okazac się funckja do obliczania silni, ostatnia funkcja tak jak jest tuataj wydaje mi się ze powinna zosta
-
-// abcd abdc acbd acdb adbc adcb
-// bacd badc bcda bcad bdac bdca
-// cabd cadb cbad cbda cdab cdba
-// dabc dacb dbac dbca dcab dcba
