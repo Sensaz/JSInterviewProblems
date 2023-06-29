@@ -1,6 +1,7 @@
 // Funkcja która przyjmuje dwa stringi
 
 // searchInString('AdnBndAndBdaBn', 'dAn') //  4 ("Adn", "ndA", "dAn", "And")
+
 // f('AbrAcadAbRa', 'cAda') // 2
 
 function factorial(n, el) {
@@ -35,13 +36,11 @@ function searchInString(str, reg) {
     str.includes(el) && (includesElements = [...includesElements, el]);
   });
   console.log(combinations);
-  console.log(includesElements);
+  console.log(includesElements.length, includesElements);
 }
 
 // Obliczyc wszystkie mozliwe kombinacje dla reg, porównac czy str zawiera jakikolwiek ciąg znaków z reg'a następnie wypisac jej wszystkie do talblicy i obliczyc jej długośc es
 
-// 1. Jednak nie es
-// 2. Zrobic porównanie str z include poprzez wartości w tablicy newArr za pomocą pętli for of, jeśli bedzie true to przypisac rozwiązanie do nowej tablicy oraz pokazac jej długośc
 // 3. Uogólnic kod tak aby działał z większą lub mniejszą ilością znaków, pomocna moze okazac się funckja do obliczania silni, ostatnia funkcja tak jak jest tuataj wydaje mi się ze powinna zosta
 
 // abcd abdc acbd acdb adbc adcb
