@@ -5,6 +5,7 @@
 // searchInString('AbrAcadAbRa', 'cAda') // 2
 
 // <!--------- DLA N ELEMENTÓW ---------!>
+
 function anagramForNElements(arrReg) {
   let options = [];
   let helperCombinations = [];
@@ -23,21 +24,10 @@ function anagramForNElements(arrReg) {
   })(arrReg, options);
 
   options.forEach((el) => {
-    for (let i = 0; i <= 2; i++) {
-      const currentSign = el[i];
-      let firstSign = "";
-      const temporary = el.filter((sign) => sign !== currentSign);
-      for (let n = 0; n <= 1; n++) {
-        n === 0
-          ? (firstSign = temporary)
-          : (firstSign = [temporary[1], temporary[0]]);
-
-        helperCombinations = [
-          ...helperCombinations,
-          ...[[currentSign, ...firstSign].join("")],
-        ];
-      }
-    }
+    helperCombinations = [
+      ...helperCombinations,
+      ...anagramForThreeElements(el),
+    ];
   });
 
   return helperCombinations.map((el) => {
@@ -53,12 +43,12 @@ function anagramForNElements(arrReg) {
 
 // <!--------- DLA 3 ELEMENTÓW ---------!>
 
-function anagramForThreeElements(arrReg) {
+function anagramForThreeElements(arr) {
   let options = [];
   for (let i = 0; i <= 2; i++) {
-    const currentSign = arrReg[i];
+    const currentSign = arr[i];
     let firstSign = "";
-    const temporary = arrReg.filter((sign) => sign !== currentSign);
+    const temporary = arr.filter((sign) => sign !== currentSign);
     for (let n = 0; n <= 1; n++) {
       n === 0
         ? (firstSign = temporary)
@@ -75,6 +65,8 @@ function anagramForThreeElements(arrReg) {
 function anagramForTwoElements(arrReg) {
   return [arrReg.join(""), [arrReg[1], arrReg[0]].join("")];
 }
+
+// <!--------- FUNKCJA GŁÓWNA ---------!>
 
 function searchInString(str, reg) {
   const arrReg = reg.split("");
