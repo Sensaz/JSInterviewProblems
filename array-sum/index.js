@@ -1,7 +1,6 @@
 //  array_sum([1,2,[3,4,[5]]])
 
 function array_sum(arr, currentSum = 0) {
-  debugger;
   let sum = currentSum;
   arr.forEach((number) => {
     if (typeof number === "number") sum += number;
